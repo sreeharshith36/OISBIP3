@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Login Authentication</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+            }
+
+            h1 {
+                margin-bottom: 20px;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                width: 300px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 8px;
+                margin: 6px 0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            #securedPage {
+                display: none;
+                align-items: center;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Login Authentication System</h1>
+        <div class="container">
+            <div class="box" id="registration">
+                <h2>Register</h2>
+                <input type="text" id="regUsername" placeholder="Username">
+                <input type="password" id="regPassword" placeholder="Password">
+                <button onclick="registerUser()">Register</button>
+            </div>
+            <div class="box" id="login">
+                <h2>Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button onclick="loginUser()">Login</button>
+            </div>
+        </div>
+        <div class="container" id="securedPage">
+            <div class="box">
+                <h2>Secured Page</h2>
+                <p>Welcome to the secured page!You are logged in.</p>
+            </div>
+        </div>
+        <script>
+            const userDatabase={};
+            function registerUser() {
+                const regUsername=document.getElementById("regUsername").value;
+                const regPassword=document.getElementById("regPassword").value;
+                
+                if(regUsername in userDatabase) {
+                    alert("Username is already exists");
+                    return;
+                }
+
+                const hashedPassword=hashPassword(regPassword);
+                userDatabase[regUsername]=hashedPassword;
+
+                alert("Registration Successful");
+            }
+
+            function loginUser() {
+                const loginUsername=document.getElementById("loginUsername").value;
+                const loginPassword=document.getElementById("loginPassword").value;
+
+            if(!(loginUsername in userDatabase)) {
+                alert("Username not found");
+                return;
+            }
+
+            const storedPassword=userDatabase[loginUsername];
+            if(comparePasswords(loginPassword,storedPassword)){
+                document.getElementById("login").style.display="none";
+                document.getElementById("registration").style.display="none";
+                document.getElementById("securedPage").style.display="block";
+            } else {
+                alert("Incorrect password");
+            }
+        }
+        function hashPassword(password){
+            return password;
+        }
+
+        function comparePasswords(inputPassword,storedPassword) {
+            return inputPassword === storedPassword;
+        }
+
+        </script>
+    </body>
+</html>
